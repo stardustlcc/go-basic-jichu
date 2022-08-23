@@ -43,6 +43,22 @@ type person struct {
 	age        int8
 }
 
+type User struct {
+	Name    string
+	Gender  string
+	Address Address //结构体嵌套
+	Habby
+}
+
+type Address struct {
+	Province string
+	City     string
+}
+
+type Habby struct {
+	BigBoy bool
+}
+
 func main() {
 
 	//自定义类型
@@ -138,6 +154,20 @@ func main() {
 	//需要修改接收者中的值
 	//接收者是拷贝代价比较大的大对象
 	//保证一致性，如果有某个方法使用了指针接收者，那么其他的方法也应该使用指针接收者。
+
+	//结构体嵌套
+	user1 := User{
+		Name:   "CICI",
+		Gender: "女",
+		Address: Address{
+			Province: "安徽",
+			City:     "阜阳",
+		},
+		Habby: Habby{
+			BigBoy: false,
+		},
+	}
+	fmt.Printf("user=%#v\n", user1) //user=main.User{Name:"CICI", Gender:"女", Address:main.Address{Province:"安徽", City:"阜阳"}, Habby:main.Habby{BigBoy:false}}
 
 }
 
