@@ -92,6 +92,15 @@ func main() {
 	fun2(ch2)
 
 	/* -------------------------*/
+	//通道案例
+	ch3 := Producer()
+	res := Consumer(ch3)
+	fmt.Println(res) //25
+
+	//单向通道案例约束参数
+	ch4 := Producer2()
+	res2 := Consumer2(ch4)
+	fmt.Println(res2) //25
 
 }
 
@@ -116,4 +125,50 @@ func fun2(ch chan int) {
 	for v := range ch {
 		fmt.Println(v)
 	}
+}
+
+//返回一个通道
+func Producer() chan int {
+	ch := make(chan int, 2)
+	go func() {
+		for i := 0; i < 10; i++ {
+			if i%2 == 1 {
+				ch <- i //往通道里发送数据
+			}
+		}
+		close(ch)
+	}()
+	return ch
+}
+
+//消费者，接收一个通道
+func Consumer(ch chan int) int {
+	sum := 0
+	for v := range ch {
+		sum += v
+	}
+	return sum
+}
+
+//返回一个接收通道
+func Producer2() <-chan int {
+	ch := make(chan int, 2)
+	go func() {
+		for i := 0; i < 10; i++ {
+			if i%2 == 1 {
+				ch <- i //往通道里发送数据
+			}
+		}
+		close(ch)
+	}()
+	return ch
+}
+
+//参数是一个接收通道
+func Consumer2(ch <-chan int) int {
+	sum := 0
+	for v := range ch {
+		sum += v
+	}
+	return sum
 }
